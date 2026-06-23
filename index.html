@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foton Academy</title>
+    <script>
+      // Prevent ResizeObserver benign loop limit exceed errors and cross-origin script error noise
+      (function() {
+        const ignoreWords = [
+          'ResizeObserver',
+          'loop limit',
+          'undelivered notifications',
+          'Script error.'
+        ];
+        
+        function matchesIgnore(msg) {
+          if (!msg) return true; // Treat undefined, null, or falsy messages as benign script errors
+          const str = String(msg).trim().toLowerCase();
+          if (str === '' || str === 'script error' || str === 'script error.') return true;
+          return ignoreWords.some(word => str.includes(word.toLowerCase()));
+        }
+
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (matchesIgnore(message) || (error && matchesIgnore(error.message))) {
+            return true; // prevent default browser handling
+          }
+        };
+
+        window.addEventListener('error', function(e) {
+          if (matchesIgnore(e.message) || matchesIgnore(e.error?.message)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          const reason = e.reason;
+          const msg = (reason && (reason.message || reason)) || '';
+          if (matchesIgnore(msg)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Portal Sát Hạch Bán Hàng Foton",
+  "description": "Cổng thông tin đào tạo, học tập, ôn luyện và thi sát hạch trực tuyến dành riêng cho Nhân viên Bán hàng xe tải Foton tại thị trường miền Bắc.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
